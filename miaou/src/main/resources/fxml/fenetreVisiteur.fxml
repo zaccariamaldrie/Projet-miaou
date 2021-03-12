@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="549.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.miaou.fenetreVisiteurController">
+   <children>
+      <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <SplitPane dividerPositions="0.35" layoutX="200.0" layoutY="120.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <ListView fx:id="listeFiches" layoutX="3.0" layoutY="85.0" onMouseClicked="#selectFiche" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <GridPane layoutX="197.0" layoutY="185.0" prefHeight="125.0" prefWidth="104.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints fillHeight="false" maxHeight="255.0" minHeight="-Infinity" percentHeight="35.0" prefHeight="500.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="487.0" minHeight="10.0" prefHeight="384.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <GridPane gridLinesVisible="true" prefHeight="151.0" prefWidth="1037.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="408.0" minWidth="-Infinity" prefWidth="176.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="460.0" minWidth="10.0" prefWidth="287.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="134.0" minHeight="25.0" percentHeight="16.6" prefHeight="76.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="105.0" minHeight="0.0" percentHeight="16.6" prefHeight="105.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" percentHeight="16.6" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="16.6" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="16.6" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="16.6" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <TextField editable="false" prefHeight="25.0" prefWidth="397.0" text="Mois de la fiche de frais" />
+                              <TextField editable="false" text="Date de réception" GridPane.rowIndex="1" />
+                              <TextField editable="false" text="Date de validation" GridPane.rowIndex="2" />
+                              <TextField editable="false" text="Date de paiement" GridPane.rowIndex="3" />
+                              <TextField editable="false" text="Date remboursement" GridPane.rowIndex="4" />
+                              <TextField editable="false" text="Nombre de jours de congés" GridPane.rowIndex="5" />
+                              <TextField fx:id="moisFiche" editable="false" GridPane.columnIndex="1" />
+                              <TextField fx:id="dateReception" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="dateValidation" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="datePaiement" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="dateRemboursement" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="nbConges" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                           </children>
+                        </GridPane>
+                        <TableView onMouseClicked="#trierFrais" prefHeight="350.0" prefWidth="615.0" GridPane.rowIndex="1">
+                          <columns>
+                              <TableColumn editable="false" prefWidth="75.0" text="Date" />
+                            <TableColumn editable="false" prefWidth="87.0" text="Type de frais" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Quantité" />
+                            <TableColumn editable="false" prefWidth="63.0" text="Montant" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Taxe" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Status" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Congé" />
+                              <TableColumn editable="false" prefWidth="75.0" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
