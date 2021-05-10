@@ -9,7 +9,7 @@ Nom de compte : Kevin Tran / Mot de passe : Henri
 
 Nom de compte : Sara Texier / Mot de passe : Bichette
 
-Compte comptable :
+Comptes comptables :
 
 Nom de compte : Justin Leroux / Mot de passe : Usonami
 
