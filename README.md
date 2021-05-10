@@ -1,5 +1,16 @@
 "# Projet-miaou" 
 
+## TESTER L'APPLICATION
+Comptes visiteurs :
+Nom de compte : Zaccaria Maldrie / Mot de passe : Non
+Nom de compte : Kevin Tran / Mot de passe : Henri
+Nom de compte : Sara Texier / Mot de passe : Bichette
+
+Compte comptable :
+Nom de compte : Justin Leroux / Mot de passe : Usonami
+Nom de compte : Cedric Daye / Mot de passe : Tonton
+Nom de compte : Romain Saudemon / Mot de passe : Dada
+
 ## 29/01/2021
 structure de la base de donnée faite, avec les types de variables en raccord avec les types de ces mêmes variable présent dans le code java.
 
