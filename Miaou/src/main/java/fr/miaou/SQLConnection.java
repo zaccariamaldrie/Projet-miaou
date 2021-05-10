@@ -7,6 +7,10 @@ import java.time.LocalDate;
 
 public class SQLConnection {
 
+    //CHANGER LA DATE DU JOUR ICI POUR LES TESTES
+
+    public static LocalDate DATE = LocalDate.of(2021, 3, 1);
+
     private Connection con;
     private Statement statement;
     private ResultSet resultSet;
@@ -123,33 +127,78 @@ public class SQLConnection {
     public void initialiser(ArrayList<Agent> agents, ArrayList<FicheFrais> fiches, ArrayList<Frais> frais, ArrayList<TypeRefus> typeRefus, ArrayList<Vehicule> vehicules){
         try {
             statement = con.createStatement();
+
+            if (DATE.getMonthValue() == 1){
+                statement.execute("UPDATE fdrm SET fdrm_reception = '"+DATE+"' WHERE fdrm_mois = "+12+" AND fdrm_reception IS NULL;");
+            } else {
+                statement.execute("UPDATE fdrm SET fdrm_reception = '"+DATE+"' WHERE fdrm_mois = "+(DATE.getMonthValue()-1)+" AND fdrm_reception IS NULL;");
+            }
+
             resultSet = statement.executeQuery("SELECT * FROM frais");
             while (resultSet.next()){
                 frais.add(new Frais(resultSet.getInt("fr_id"), resultSet.getString("fr_libelle_libre"), resultSet.getObject("fr_date", LocalDate.class), resultSet.getInt("fr_quantite"), resultSet.getDouble("fr_montant"), resultSet.getInt("fr_status"), resultSet.getInt("fk_tre"), resultSet.getInt("fk_mfr"), resultSet.getInt("fk_fdrm_ag"), resultSet.getInt("fk_fdrm_mois")));
             }
+
             resultSet = statement.executeQuery("SELECT * FROM fdrm");
             while (resultSet.next()){
                 fiches.add(new FicheFrais(resultSet.getInt("fk_ag"), resultSet.getInt("fdrm_mois"), resultSet.getObject("FDRM_reception", LocalDate.class), resultSet.getObject("FDRM_validation", LocalDate.class), resultSet.getObject("FDRM_paiement", LocalDate.class), resultSet.getObject("FDRM_remboursement", LocalDate.class), resultSet.getInt("nbrj_conges")));
             }
+
             resultSet = statement.executeQuery("SELECT * FROM agents");
             while (resultSet.next()){
                 agents.add(new Agent(resultSet.getInt("ag_matricule"), resultSet.getString("ag_nom"), resultSet.getString("ag_password"), resultSet.getInt("fk_se"), resultSet.getInt("fk_ta"), resultSet.getString("fk_ve")));
             }
+
             resultSet = statement.executeQuery("SELECT * FROM type_refus");
             while (resultSet.next()){
                 typeRefus.add(new TypeRefus(resultSet.getInt("tre_id"), resultSet.getString("tre_libelle")));
             }
+
             resultSet = statement.executeQuery("SELECT * FROM vehicules");
             while (resultSet.next()){
                 vehicules.add(new Vehicule(resultSet.getString("ve_immat"), resultSet.getString("ve_marque"), resultSet.getString("ve_model"), resultSet.getInt("fk_fkm")));
             }
-            
+
+            for(Agent agent : agents){
+                boolean exist = false;
+                int id = agent.getId();
+                int mois = DATE.getMonthValue()+1;
+                FicheFrais ficheDelete = new FicheFrais(0, 0);
+                for(FicheFrais fiche : fiches){
+                    if(fiche.getAg() == id && fiche.getFdrmMois() == mois){
+                        exist = true;
+                        ficheDelete = fiche;
+                    }
+                }
+                if (exist){
+                    fiches.remove(ficheDelete);
+                    statement.execute("DELETE FROM fdrm WHERE fk_ag = "+id+" AND fdrm_mois = "+mois+"");
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void createFrais(ArrayList<Frais> frais, int idAgentDonne, String libelle, int quantite, double prix, int mois){
+    public void createFicheFraisConnection(ArrayList<FicheFrais> fiches, int idAgent){
+        boolean exist = false;
+        int id = idAgent;
+        int mois = DATE.getMonthValue();
+        for(FicheFrais fiche : fiches){
+            if(fiche.getAg() == id && fiche.getFdrmMois() == mois){
+                exist = true;
+            }
+        }
+        if(!exist){
+            fiches.add(new FicheFrais(id, mois, null, null, null, null, 0));
+            try {
+                statement.execute("INSERT INTO fdrm (fk_ag, fdrm_mois) VALUES ("+id+", "+mois+")");
+            } catch (Exception e) {}
+        }
+    }
+
+    public void createFrais(ArrayList<Frais> frais, int idAgentDonne, String libelle, int quantite, double prix, int mois, LocalDate date){
         try {
             int id = 0;
             resultSet = statement.executeQuery("SELECT fr_id FROM miaou.frais ORDER BY fr_id DESC LIMIT 1;");
@@ -157,10 +206,9 @@ public class SQLConnection {
                 id = resultSet.getInt("fr_id");
             }
             Frais newFrais = new Frais(id+1, libelle, quantite, prix, idAgentDonne, mois);
-            LocalDate date = LocalDate.now();
             newFrais.setDate(date);
             frais.add(newFrais);
-            statement.execute("insert into frais(fr_libelle_libre, fr_quantite, fr_montant, fr_taxe, fr_status, fk_fdrm_ag, fk_fdrm_mois) values ('"+libelle+"', "+quantite+", "+prix+", "+newFrais.getTaxe()+", 0, "+idAgentDonne+", "+mois+")");
+            statement.execute("insert into frais(fr_libelle_libre, fr_date, fr_quantite, fr_montant, fr_taxe, fr_status, fk_fdrm_ag, fk_fdrm_mois) values ('"+libelle+"', '"+date+"', "+quantite+", "+prix+", "+newFrais.getTaxe()+", 0, "+idAgentDonne+", "+mois+")");
         
         } catch (SQLException e) {
             e.printStackTrace();
@@ -231,11 +279,13 @@ public class SQLConnection {
 
     public void deleteFrais(ArrayList<Frais> frais, int id){
         try {
+            Frais fraisTrouve = new Frais();;
             for (Frais fr : frais){
                 if(fr.getId() == id){
-                    frais.remove(fr);
+                    fraisTrouve = fr;
                 }
             }
+            frais.remove(fraisTrouve);
             statement.execute("DELETE FROM frais WHERE fr_id = "+id+"");
         } catch (SQLException e) {
             e.printStackTrace();

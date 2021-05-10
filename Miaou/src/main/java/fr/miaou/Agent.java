@@ -40,6 +40,10 @@ public class Agent {
         return ag_nom;
     }
 
+    public int getType(){
+        return this.fk_ta;
+    }
+
     public String getSecteur(){
         String secteur;
         switch (fk_se) {
@@ -62,5 +66,9 @@ public class Agent {
                 secteur = "Error";
         }
         return secteur;
+    }
+
+    public int getSecteurInt (){
+        return this.fk_se;
     }
 }

@@ -13,7 +13,7 @@ public class MainApp extends Application {
     public static Stage stage;
     private static Scene fenetreVisiteur;
     private static Scene fenetreConnection;
-    public static CurrentAgent agent;
+    private static Scene fenetreComptable;
     public static int id;
 
     public static ArrayList<Agent> agents;
@@ -36,12 +36,13 @@ public class MainApp extends Application {
     public static Scene setScene(int idDonne) throws IOException {
         fenetreConnection = new Scene(loadFXML("fenetreConnection.fxml"));
         fenetreVisiteur = new Scene(loadFXML("fenetreVisiteur.fxml"));
+        fenetreComptable = new Scene(loadFXML("fenetreComptable.fxml"));
         if(idDonne == 0){
             return fenetreConnection;
         }else if(idDonne == 1){
             return fenetreVisiteur;
         }else if(idDonne == 2){
-            System.out.println("pasfait");
+            return fenetreComptable;
         }
         return null;
     }

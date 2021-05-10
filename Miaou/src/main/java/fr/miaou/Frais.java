@@ -16,6 +16,10 @@ public class Frais {
     private int fk_fdrm_ag;
     private int fk_fdrm_mois;
 
+    public Frais (){
+        
+    }
+
     public Frais (int id, String libelle, int quantite, Double montant, int fdrm_ag, int fdrm_mois){
         fr_id = id;
         fr_libelle_libre = libelle;
@@ -67,6 +71,10 @@ public class Frais {
 
     public void setMfr(int mfr_id){
         this.fk_mfr = mfr_id;
+    }
+
+    public void setLibelle(String libelle){
+        this.fr_libelle_libre = libelle;
     }
 
     public void modifierFrais(int id, String libelle, LocalDate date, int quantite, Double montant, int status, int tre, int mfr, int fdrm_ag, int fdrm_mois){

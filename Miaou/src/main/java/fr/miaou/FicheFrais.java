@@ -11,10 +11,12 @@ public class FicheFrais {
     private LocalDate fdrm_paiement;
     private LocalDate fdrm_remboursement;
     private int nbrj_conges;
+    private String nomVisiteur;
 
     public FicheFrais (int ag, int mois){
         fk_ag = ag;
         fdrm_mois = mois;
+        nomVisiteur = MainApp.con.agGetNom(fk_ag);
     }
 
     public FicheFrais (int ag, int mois, LocalDate reception, LocalDate validation, LocalDate paiement, LocalDate remboursement, int conges){
@@ -25,6 +27,11 @@ public class FicheFrais {
         fdrm_paiement = paiement;
         fdrm_remboursement = remboursement;
         nbrj_conges = conges;
+        nomVisiteur = MainApp.con.agGetNom(fk_ag);
+    }
+
+    public String getNomVisiteur(){
+        return this.nomVisiteur;
     }
 
     public int getAg(){
@@ -139,6 +146,10 @@ public class FicheFrais {
                 mois = "Error";
         }
         return mois;
+    }
+
+    public int getMoisEntier(){
+        return this.fdrm_mois;
     }
     
 }
